@@ -36,9 +36,9 @@ function base_install()
     echo "                                                 Base Installation                                                  "
     echo "------------------------------------------------------------------------------------------------------------------"
     sudo nixos-generate-config --root /mnt
-    file_path="/home/nixos/zwelch-flakes/nixos/hardware-configuration.nix"
+    file_path="/home/nixos/nixinstall/nixos/hardware-configuration.nix"
     sudo rm $file_path
-    sudo cp /mnt/etc/nixos/hardware-configuration.nix /home/nixos/zwelch-flakes/nixos/
+    sudo cp /mnt/etc/nixos/hardware-configuration.nix /home/nixos/nixinstall/nixos/
     replacement_block='
         fileSystems."/" =
             {
@@ -58,12 +58,13 @@ function base_install()
             }
         ];
     '
-    sudo awk -v var="$replacement_block" 'NR==14{print var} NR<14 || NR>24' $file_path | sudo tee /home/nixos/zwelch-flakes/nixos/hardware-configuration_changed.nix
-    sudo cp -r /home/nixos/zwelch-flakes /mnt/.
-    sudo nix develop --extra-experimental-features nix-command --extra-experimental-features flakes
-    sudo rm -rf /mnt/zwelch-flakes/.git
-    pushd /mnt/zwelch-flakes/
-    sudo nixos-install --no-root-passwd --flake .#zwelchnix
+    sudo awk -v var="$replacement_block" 'NR==14{print var} NR<14 || NR>24' $file_path | sudo tee /home/nixos/nixinstall/nixos/hardware-configuration_changed.nix
+    sudo cp -r /home/nixos/nixinstall /mnt/.
+    sudo export NIX_CONFIG="experimental-features = nix-command flakes"
+    # sudo nix develop --extra-experimental-features nix-command --extra-experimental-features flakes
+    sudo rm -rf /mnt/nixinstall/.git
+    pushd /mnt/nixinstall/
+    sudo nixos-install --flake .#zwelchnix
     popd
 }
 
@@ -81,3 +82,5 @@ echo -ne "
 "
 sleep 2
 ext4_format
+sleep 5
+base_install
