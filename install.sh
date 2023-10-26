@@ -13,6 +13,7 @@ function ext4_format ()
     echo "Enter disk name for installation: "
     read disk
     sudo umount /dev/${disk}?*
+    sudo swapoff /mnt/.swapfile
     sudo umount -l /mnt
     sudo sgdisk --zap-all /dev/$disk
     sudo sgdisk -n 1:0:+500M -n 2:0:0 -t 1:ef00 /dev/$disk -p
