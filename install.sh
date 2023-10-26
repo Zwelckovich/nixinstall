@@ -37,7 +37,7 @@ function base_install()
     echo "                                                 Base Installation                                                  "
     echo "------------------------------------------------------------------------------------------------------------------"
     sudo nixos-generate-config --root /mnt
-    file_path="/home/nixos/nixinstall/nixos/hardware-configuration.nix"
+    file_path="/home/nixos/nixinstall/system/hardware-configuration.nix"
     sudo rm $file_path
     sudo cp /mnt/etc/nixos/hardware-configuration.nix /home/nixos/nixinstall/system/
     replacement_block='
