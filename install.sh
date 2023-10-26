@@ -39,7 +39,7 @@ function base_install()
     sudo nixos-generate-config --root /mnt
     file_path="/home/nixos/nixinstall/nixos/hardware-configuration.nix"
     sudo rm $file_path
-    sudo cp /mnt/etc/nixos/hardware-configuration.nix /home/nixos/nixinstall/nixos/
+    sudo cp /mnt/etc/nixos/hardware-configuration.nix /home/nixos/nixinstall/system/
     replacement_block='
         fileSystems."/" =
             {
@@ -59,7 +59,7 @@ function base_install()
             }
         ];
     '
-    sudo awk -v var="$replacement_block" 'NR==14{print var} NR<14 || NR>24' $file_path | sudo tee /home/nixos/nixinstall/nixos/hardware-configuration_changed.nix
+    sudo awk -v var="$replacement_block" 'NR==14{print var} NR<14 || NR>24' $file_path | sudo tee /home/nixos/nixinstall/system/hardware-configuration_changed.nix
     sudo cp -r /home/nixos/nixinstall /mnt/.
     # sudo export NIX_CONFIG="experimental-features = nix-command flakes"
     sudo nix develop --extra-experimental-features nix-command --extra-experimental-features flakes
