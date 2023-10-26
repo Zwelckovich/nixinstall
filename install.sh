@@ -15,7 +15,7 @@ function ext4_format ()
     sudo umount /dev/${disk}?*
     sudo umount -l /mnt
     sudo sgdisk --zap-all /dev/$disk
-    sudo sgdisk -n 1:0:+300M -n 2:0:0 -t 1:ef00 /dev/$disk -p
+    sudo sgdisk -n 1:0:+500M -n 2:0:0 -t 1:ef00 /dev/$disk -p
     dn=${disk}1
     sudo mkfs.fat -F 32 /dev/$dn
     sudo fatlabel /dev/$dn NIXBOOT
@@ -24,7 +24,7 @@ function ext4_format ()
     sudo mount /dev/disk/by-label/NIXROOT /mnt
     sudo mkdir -p /mnt/boot
     sudo mount /dev/disk/by-label/NIXBOOT /mnt/boot
-    sudo fallocate -l 2G /mnt/.swapfile
+    sudo fallocate -l 6G /mnt/.swapfile
     sudo chmod 600 /mnt/.swapfile
     sudo mkswap /mnt/.swapfile
     sudo swapon /mnt/.swapfile
@@ -60,8 +60,8 @@ function base_install()
     '
     sudo awk -v var="$replacement_block" 'NR==14{print var} NR<14 || NR>24' $file_path | sudo tee /home/nixos/nixinstall/nixos/hardware-configuration_changed.nix
     sudo cp -r /home/nixos/nixinstall /mnt/.
-    sudo export NIX_CONFIG="experimental-features = nix-command flakes"
-    # sudo nix develop --extra-experimental-features nix-command --extra-experimental-features flakes
+    # sudo export NIX_CONFIG="experimental-features = nix-command flakes"
+    sudo nix develop --extra-experimental-features nix-command --extra-experimental-features flakes
     sudo rm -rf /mnt/nixinstall/.git
     pushd /mnt/nixinstall/
     sudo nixos-install --flake .#zwelchnix
