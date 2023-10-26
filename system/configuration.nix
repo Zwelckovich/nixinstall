@@ -6,18 +6,26 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+  nix.package = pkgs.nixFlakes;
+  nix.extraOptions = ''
+    	experimental-features = nix-command flakes
+  '';
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  #boot.loader.systemd-boot.enable = true;
+  #boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "nodev";
+  boot.loader.grub.useOSProber = true;
 
   networking.hostName = "zwelchnix"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -29,7 +37,7 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
-    font = "Lat2-Terminus16";
+    # font = "Lat2-Terminus16";
     keyMap = "de";
     # useXkbConfig = true; # use xkbOptions in tty.
   };
@@ -37,12 +45,12 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
- nixpkgs = {
- 	config = {
-		allowUnfree = true;
-	};
- };
-  
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+    };
+  };
+
 
   # Configure keymap in X11
   # services.xserver.layout = "de";
@@ -64,7 +72,7 @@
     initialPassword = "pw";
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   };
-  
+
   nix.settings.trusted-users = [ "zwelch" ];
   # List packages installed in system profile. To search, run:
   # $ nix search wget

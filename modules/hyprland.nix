@@ -59,7 +59,7 @@
       layout = "de";
       xkbVariant = "";
       excludePackages = [ pkgs.xterm ];
-      videoDrivers = ["nvidia"];
+      videoDrivers = [ "nvidia" ];
       libinput.enable = true;
       displayManager.gdm = {
         enable = true;
@@ -78,9 +78,9 @@
   programs = {
     hyprland = {
       enable = true;
-      enableNvidiaPatches = true;
+      nvidiaPatches = true;
       xwayland = {
-       # hidpi = true;
+        hidpi = true;
         enable = true;
       };
     };
@@ -112,7 +112,7 @@
     swaynotificationcenter
     wlr-randr
     ydotool
-    # hyprland-share-picker
+    hyprland-share-picker
     wl-clipboard
     hyprland-protocols
     hyprpicker
@@ -151,5 +151,5 @@
     XDG_SESSION_DESKTOP = "Hyprland";
     GTK_USE_PORTAL = "1";
     NIXOS_XDG_OPEN_USE_PORTAL = "1";
-  }; 
+  };
 }

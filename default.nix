@@ -1,6 +1,6 @@
 {
-	imports = [
-		./modules
-		./system
-	];
+  imports = [
+    ./modules
+    ./system
+  ];
 }
